@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import dayjs from "dayjs";
-import rawData from "../data/BTCUSDT";
+import btcusdt from "../data/BTCUSDT";
 import { OHLC } from "../components/KLineChart";
 
 const toDateStamp = (timestamp: number) =>
@@ -20,7 +20,7 @@ export default function Home({data}:{data: OHLC[]}) {
 }
 
 export async function getStaticProps() {
-  const data: OHLC[] = rawData.map(
+  const data: OHLC[] = btcusdt.map(
     (d: Omit<OHLC, "time"> & { time: number }) => {
       return {
         ...d,
