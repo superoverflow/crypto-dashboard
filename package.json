@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "crypto-js": "^4.0.0",
+    "dayjs": "^1.10.6",
     "lightweight-charts": "^3.3.0",
     "next": "^11.0.1",
     "react": "^17.0.2",

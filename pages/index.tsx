@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
       <h1>lightweight chart</h1>
-      <KLineChart />
+      <KLineChart width={800} height={600}/>
     </>
   );
 }
