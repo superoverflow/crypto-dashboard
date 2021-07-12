@@ -11,20 +11,20 @@ const signMessage = (message: string, api_secret: string): string => {
 };
 
 type Balance = {
-  asset: string,
-  free: string,
-  locked: string,
-}
+  asset: string;
+  free: string;
+  locked: string;
+};
 
 type Data = {
   data: {
-    balances: Balance []
-  }
+    balances: Balance[];
+  };
 };
 
-const getData = async () => {
-  const serverTime = Date.now()
-  const apiParam = `timestamp=${serverTime}&type=SPOT&limit=30`;
+export const getData = async (noOfDay: number) => {
+  const serverTime = Date.now();
+  const apiParam = `timestamp=${serverTime}&type=SPOT&limit=${noOfDay}`;
   const apiSignature = signMessage(apiParam, API_SECRET);
   const accountUrl = "https://api.binance.com/sapi/v1/accountSnapshot";
   const requestUrl = `${accountUrl}?${apiParam}&signature=${apiSignature}`;
@@ -34,15 +34,14 @@ const getData = async () => {
       "X-MBX-APIKEY": API_KEY,
     },
   });
-  return data
-}
+  return data;
+};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-
-  const data = await getData()
+  const data = await getData(30);
 
   return res.status(200).json({ data });
 }
