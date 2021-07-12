@@ -22,11 +22,7 @@ type Data = {
   }
 };
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-
+const getData = async () => {
   const serverTime = Date.now()
   const apiParam = `timestamp=${serverTime}&type=SPOT&limit=30`;
   const apiSignature = signMessage(apiParam, API_SECRET);
@@ -38,6 +34,15 @@ export default async function handler(
       "X-MBX-APIKEY": API_KEY,
     },
   });
+  return data
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<Data>
+) {
+
+  const data = await getData()
 
   return res.status(200).json({ data });
 }
