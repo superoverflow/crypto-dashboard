@@ -2,7 +2,8 @@ import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 import rawData from "../data/BTCUSDT";
 import { OHLC } from "../components/KLineChart";
-import BalanceCard, { Balance } from "../components/BalanceCard";
+import { Balance } from "../components/BalanceCard";
+import Balances from "../components/Balances";
 import { getData } from "./api/binance/accountSnapshot";
 
 const toDateStamp = (timestamp: number) =>
@@ -24,10 +25,7 @@ export default function Home({
   return (
     <>
       <h1>SnapshotTime - {latestSnapshotTime}</h1>
-      {latestBalances.map((balance, index) => {
-        return <BalanceCard key={index} balance={balance} />;
-      })}
-
+      <Balances balances={latestBalances} />
       <KLineChart width={800} height={600} data={btcusd} />
     </>
   );

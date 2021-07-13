@@ -477,6 +477,11 @@
     "@emotion/react" "^11.1.1"
     "@theme-ui/css" "0.10.0"
 
+"@theme-ui/preset-swiss@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@theme-ui/preset-swiss/-/preset-swiss-0.10.1.tgz#65b2d591cbf045bfe6df28992d01dd48b0c0de0c"
+  integrity sha512-jHqprlAnTvzyWcaa2ufwhYnm1Ez2diAAjMpnA0ZtB1mynu5O+va6NtZgndvU6Ma6lbfCmJ3ybc/ZNcvupEtroQ==
+
 "@theme-ui/theme-provider@0.10.0":
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@theme-ui/theme-provider/-/theme-provider-0.10.0.tgz#16586af579bef804f1e4997a131134d2465bfd5d"
