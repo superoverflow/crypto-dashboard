@@ -21,7 +21,7 @@ const balanceFilter = (balance: Balance) => !filterUsd(balance) && !filterSmallB
 
 const Balances: FC<{ balances: Balance[] }> = ({ balances }) => {
   const usd = balances.reduce(usdReducer, { asset: "USD", free: 0, locked: 0 });
-  console.log(balances);
+
   return (
     <Flex>
       {balances.map((balance, index) =>

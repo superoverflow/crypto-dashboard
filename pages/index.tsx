@@ -5,6 +5,8 @@ import { OHLC } from "../components/KLineChart";
 import { Balance } from "../components/BalanceCard";
 import Balances from "../components/Balances";
 import { getData } from "./api/binance/accountSnapshot";
+import Header from "../components/Header";
+import { Container } from "theme-ui";
 
 const toDateStamp = (timestamp: number) =>
   dayjs(timestamp).format("YYYY-MM-DD");
@@ -23,11 +25,13 @@ export default function Home({
   latestBalances: Balance[];
 }) {
   return (
-    <>
+    <Container sx={{ width: 800 }}>
+      <Header />
+
       <h1>SnapshotTime - {latestSnapshotTime}</h1>
       <Balances balances={latestBalances} />
       <KLineChart width={800} height={600} data={btcusd} />
-    </>
+    </Container>
   );
 }
 
