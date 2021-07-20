@@ -7,6 +7,9 @@ import Balances from "../components/Balances";
 import { getData } from "./api/binance/accountSnapshot";
 import Header from "../components/Header";
 import { Container } from "theme-ui";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/client";
 
 const toDateStamp = (timestamp: number) =>
   dayjs(timestamp).format("YYYY-MM-DD");
@@ -24,6 +27,17 @@ export default function Home({
   latestSnapshotTime: string;
   latestBalances: Balance[];
 }) {
+  const [session] = useSession();
+
+  useEffect(() => {
+    const refreshSheet = async () => {
+      console.log({session});
+      const tradeData = await axios.get("/api/google/sheets");
+      console.log({tradeData});
+    };
+    refreshSheet();
+  }, [session]);
+
   return (
     <Container sx={{ width: 800 }}>
       <Header />
