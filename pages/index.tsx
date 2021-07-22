@@ -6,10 +6,11 @@ import { Balance } from "../components/BalanceCard";
 import Balances from "../components/Balances";
 import { getData } from "./api/binance/accountSnapshot";
 import Header from "../components/Header";
-import { Container } from "theme-ui";
+import { Container, Button } from "theme-ui";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSession } from "next-auth/client";
+
 
 const toDateStamp = (timestamp: number) =>
   dayjs(timestamp).format("YYYY-MM-DD");
@@ -17,6 +18,21 @@ const toDateStamp = (timestamp: number) =>
 const KLineChart = dynamic(() => import("../components/KLineChart"), {
   ssr: false,
 });
+
+const getPosition = (tradeData) => {
+  return tradeData?.data?.reduce((balances, trade)=> {
+    const sign = trade.side === "BUY" ? 1 : -1;
+    const currency = trade.executed.currency;
+    const amount = trade.executed.amount;
+    const balance = balances?.[currency] || 0;
+    const newBalance = balance + sign* amount
+    return { ...balances, ...Object.fromEntries([[currency, newBalance]]) }
+  }, {})
+}
+
+const getAverageCost = (tradeData, fxRate) => {
+  return null
+}
 
 export default function Home({
   btcusd,
@@ -28,19 +44,18 @@ export default function Home({
   latestBalances: Balance[];
 }) {
   const [session] = useSession();
-
-  useEffect(() => {
-    const refreshSheet = async () => {
-      console.log({session});
-      const tradeData = await axios.get("/api/google/sheets");
-      console.log({tradeData});
-    };
-    refreshSheet();
-  }, [session]);
-
+  const [tradeData, setTradeData] = useState();
+  const refreshSheet = async () => {
+    const tradeData = await axios.get("/api/google/sheets");
+    setTradeData(tradeData);
+    
+  };
+  const position = getPosition(tradeData)
+  console.log({ session, tradeData, position });
   return (
     <Container sx={{ width: 800 }}>
       <Header />
+      <Button onClick={() => refreshSheet()}>Load Data</Button>
 
       <h1>SnapshotTime - {latestSnapshotTime}</h1>
       <Balances balances={latestBalances} />
