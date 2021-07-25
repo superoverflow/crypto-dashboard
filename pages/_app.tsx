@@ -1,5 +1,5 @@
 import { ThemeProvider } from "theme-ui";
-import theme from "@theme-ui/preset-swiss";
+import theme from "../styles/theme";
 import type { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {
