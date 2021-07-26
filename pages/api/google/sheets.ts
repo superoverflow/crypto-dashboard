@@ -9,7 +9,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 type ApiResponse = {
   spreadsheetId: String;
   valueRanges: {
-    values: string[][];
+    values: (string|number)[][];
   }[];
 };
 
@@ -18,7 +18,7 @@ type CurrencyAmount = {
   currency: string;
 };
 
-type BinanceTrade = {
+export type BinanceTrade = {
   date: string;
   pair: string;
   side: string;
@@ -42,14 +42,14 @@ const parseCurrencyAmount = (s: string) => ({
 });
 
 const gSheetToBinanceTrades = (
-  gSheetData: [string, string, string, number, string, string, string][]
-) => {
+  gSheetData: (string|number)[][]
+): BinanceTrade[] => {
   return gSheetData.slice(1).map((row) => {
     const [date, pair, side] = row;
     const price = row[3];
-    const executed = parseCurrencyAmount(row[4]);
-    const amount = parseCurrencyAmount(row[5]);
-    const fee = parseCurrencyAmount(row[6]);
+    const executed = parseCurrencyAmount(row[4].toString());
+    const amount = parseCurrencyAmount(row[5].toString());
+    const fee = parseCurrencyAmount(row[6].toString());
 
     return {
       date,
@@ -59,7 +59,7 @@ const gSheetToBinanceTrades = (
       executed,
       amount,
       fee,
-    };
+    } as BinanceTrade;
   });
 };
 
