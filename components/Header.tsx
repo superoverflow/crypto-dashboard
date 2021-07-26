@@ -1,10 +1,18 @@
 import { signIn, signOut, useSession } from "next-auth/client";
 import { FC } from "react";
 import { Avatar, Flex, Button, Input } from "theme-ui";
+import { Dispatch, SetStateAction } from "react";
+import { BinanceTrade } from "../pages/api/google/sheets";
+import axios from "axios";
 
-const Header: FC = () => {
+const Header: FC<{ setTrades: Dispatch<SetStateAction<BinanceTrade[]>> }> = ({
+  setTrades,
+}) => {
   const [session] = useSession();
-
+  const loadAndSetTrades = async () => {
+    const { data } = await axios.get<BinanceTrade[]>("api/google/sheets")
+    setTrades(data)
+  }
   return (
     <Flex sx={{ bg: "muted", flexDirection: "row-reverse", gap: 3 }}>
       {!session && <Button onClick={() => signIn()}>Sign In</Button>}
@@ -13,13 +21,17 @@ const Header: FC = () => {
           <Avatar
             alt="profile pic"
             src={session.user?.image || ""}
-            sx={{ width: 40, height: 40 }}
             onClick={() => signOut()}
           />
-          <Button onClick={() => console.log("setTrade")}>Load Trades</Button>
+          <Button
+            sx={{ minWidth: 140 }}
+            onClick={() => loadAndSetTrades()}
+          >
+            Load Trades
+          </Button>
           <Input
             placeholder="Paste Google Sheet export of Binance Trades here"
-            sx={{ width: "auto" }}
+            sx={{ flexGrow: 1 }}
           ></Input>
         </>
       )}
