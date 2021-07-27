@@ -13,7 +13,7 @@ type ApiResponse = {
   }[];
 };
 
-type CurrencyAmount = {
+export type CurrencyAmount = {
   amount: number;
   currency: string;
 };
