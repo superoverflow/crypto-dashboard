@@ -58,7 +58,7 @@ const columns: Column<BinanceTrade>[] = [
     Cell: SideCell,
   },
   {
-    Header: "Price",
+    Header: "Exchange Rate",
     accessor: "price",
     Cell: RightAlignCell,
   },

@@ -1,14 +1,6 @@
 import { FC } from "react";
 import { Card, Flex, Image } from "theme-ui";
-
-export type Balance = {
-  asset: string;
-  free: string;
-  locked: string;
-};
-
-export const floatAdd = (a: string, b: string) =>
-  (parseFloat(a) + parseFloat(b)).toFixed(4);
+import { CurrencyAmount } from "../pages/api/google/sheets";
 
 const SymbolIcon: FC<{ symbol: string }> = ({ symbol }) => (
   <Image
@@ -17,14 +9,14 @@ const SymbolIcon: FC<{ symbol: string }> = ({ symbol }) => (
   />
 );
 
-const BalanceCard: FC<{ balance: Balance }> = ({ balance }) => {
+const BalanceCard: FC<{ asset: CurrencyAmount }> = ({ asset }) => {
   return (
     <Card sx={{ p: 2, minWidth: 120 }}>
       <Flex sx={{ justifyContent: "center" }}>
-        <SymbolIcon symbol={balance.asset} />
+        <SymbolIcon symbol={asset.currency} />
       </Flex>
       <Flex sx={{ justifyContent: "center" }}>
-        {floatAdd(balance.free, balance.locked)}
+        {asset.amount.toFixed(4)}
       </Flex>
     </Card>
   );

@@ -14,6 +14,7 @@
     "crypto-js": "^4.0.0",
     "dayjs": "^1.10.6",
     "lightweight-charts": "^3.3.0",
+    "lodash": "^4.17.21",
     "next": "^11.0.1",
     "next-auth": "^3.27.3",
     "react": "^17.0.2",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@types/crypto-js": "^4.0.1",
+    "@types/lodash": "^4.14.171",
     "@types/react": "17.0.13",
     "@types/react-table": "^7.7.2",
     "eslint": "7.30.0",
