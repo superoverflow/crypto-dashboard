@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /** @jsxImportSource theme-ui */
 import { useTable, Column } from "react-table";
 import React, { FC } from "react";
@@ -89,10 +90,10 @@ const TradeTable: FC<{ data: BinanceTrade[] }> = ({ data }) => {
   return (
     <table {...getTableProps()}>
       <thead>
-        {headerGroups.map((headerGroup, index) => (
-          <tr key={index} {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column, index) => (
-              <th sx={{ p: 2 }} key={index} {...column.getHeaderProps()}>
+        {headerGroups.map((headerGroup) => (
+          <tr  {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column) => (
+              <th sx={{ p: 2 }}  {...column.getHeaderProps()}>
                 {column.render("Header")}
               </th>
             ))}
@@ -101,13 +102,13 @@ const TradeTable: FC<{ data: BinanceTrade[] }> = ({ data }) => {
       </thead>
 
       <tbody {...getTableBodyProps()}>
-        {rows.map((row, index) => {
+        {rows.map((row) => {
           prepareRow(row);
           return (
-            <tr key={index} {...row.getRowProps()}>
-              {row.cells.map((cell, index) => {
+            <tr {...row.getRowProps()}>
+              {row.cells.map((cell) => {
                 return (
-                  <td sx={{ p: 2 }} key={index} {...cell.getCellProps()}>
+                  <td sx={{ p: 2 }} {...cell.getCellProps()}>
                     {cell.render("Cell")}
                   </td>
                 );
