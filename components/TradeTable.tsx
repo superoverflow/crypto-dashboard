@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-key */
 /** @jsxImportSource theme-ui */
 import { useTable, Column } from "react-table";
-import React, { FC } from "react";
+import { FC } from "react";
 import { Flex } from "theme-ui";
 import { BinanceTrade, CurrencyAmount } from "../pages/api/google/sheets";
 import dayjs from "dayjs";
 
-const symbol = Object.fromEntries([
+export const symbol = Object.fromEntries([
   ["BTC", "₿"],
   ["ETH", "Ξ"],
   ["ADA", "₳"],

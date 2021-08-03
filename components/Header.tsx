@@ -12,7 +12,7 @@ const Header: FC<{ setTrades: Dispatch<SetStateAction<BinanceTrade[]>> }> = ({
 }) => {
   const [session] = useSession();
 
-  const { data, isLoading , refetch } = useQuery(
+  const { isLoading , refetch } = useQuery(
     "binanceTrades",
     async () => await axios.get<BinanceTrade[]>("api/google/sheets"),
     { onSuccess: (resp) => setTrades(resp.data) }

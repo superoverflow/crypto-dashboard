@@ -1,11 +1,14 @@
 import { Container } from "theme-ui";
+import { useQuery } from "react-query";
 import Header from "../components/Header";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import rawData from "../data/BTCUSDT";
 import { BinanceTrade, CurrencyAmount } from "./api/google/sheets";
+import { ReturnType as PriceType } from "./api/binance/currentAveragePrice";
 import TradeTable from "../components/TradeTable";
-import { getPosition } from "../utils/binance";
+import { getPosition, getAveragePrice } from "../utils/binance";
 import Balances from "../components/Balances";
+import { Asset } from "../components/BalanceCard";
 import { isCrypto } from "../utils/binance";
 import { OHLC } from "../components/KLineChart";
 import dynamic from "next/dynamic";
@@ -13,33 +16,59 @@ const KLineChart = dynamic(() => import("../components/KLineChart"), {
   ssr: false,
 });
 import dayjs from "dayjs";
+import axios from "axios";
 
 const toDateStamp = (timestamp: number) =>
   dayjs(timestamp).format("YYYY-MM-DD");
 
-export default function Home({ btcusd }: { btcusd: OHLC[] }) {
-  const [trades, setTrades] = useState<BinanceTrade[]>([]);
+const getCurrentAveragePrice = async (currency: string) => {
+  const { data } = await axios.get<PriceType>(
+    `api/binance/currentAveragePrice?symbols=${currency}`
+  );
+  return data[0].price;
+};
+
+const cryptoPositions = (trades: BinanceTrade[]) => {
   const positions: CurrencyAmount[] = Object.entries(getPosition(trades)).map(
     (position) => ({
       currency: position[0],
       amount: position[1] as number,
     })
   );
-  const cryptoPositions = positions.filter((position) =>
-    isCrypto(position.currency)
-  );
 
+  return Promise.all(
+    positions
+      .filter((position) => isCrypto(position.currency))
+      .map(async (position) => {
+        const averagePrice = getAveragePrice(trades);
+        const price = await getCurrentAveragePrice(position.currency);
+        return {
+          currency: position.currency,
+          position: position.amount,
+          averagePrice: averagePrice[position.currency].averagePrice,
+          cost: averagePrice[position.currency].volume,
+          currentPrice: price,
+        };
+      })
+  );
+};
+
+export default function Home({ btcusd }: { btcusd: OHLC[] }) {
+  const [trades, setTrades] = useState<BinanceTrade[]>([]);
+
+  const { data, isLoading } = useQuery(
+    ["cryptoPositions", trades],
+    () => cryptoPositions(trades),
+  );
+  console.log("refetch")
   return (
     <Container sx={{ bg: "background", width: 800 }}>
       <Header setTrades={setTrades} />
-
-      {trades.length > 1 && (
         <>
-          <Balances assets={cryptoPositions} />
+          {isLoading ? null : <Balances assets={data} />}
           <KLineChart width={800} height={600} data={btcusd} />
-          <TradeTable data={trades} />
+          {trades.length > 1 && <TradeTable data={trades} />}
         </>
-      )}
     </Container>
   );
 }

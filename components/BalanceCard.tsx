@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Card, Flex, Image } from "theme-ui";
-import { CurrencyAmount } from "../pages/api/google/sheets";
+import { Flex, Image } from "theme-ui";
+import { symbol } from "./TradeTable";
 
 const SymbolIcon: FC<{ symbol: string }> = ({ symbol }) => (
   <Image
@@ -9,16 +9,35 @@ const SymbolIcon: FC<{ symbol: string }> = ({ symbol }) => (
   />
 );
 
-const BalanceCard: FC<{ asset: CurrencyAmount }> = ({ asset }) => {
+export type Asset = {
+  currency: string;
+  position: number;
+  averagePrice: number;
+  cost: number;
+  currentPrice: number;
+};
+
+const BalanceCard: FC<{ asset: Asset }> = ({ asset }) => {
   return (
-    <Card sx={{ p: 2, minWidth: 120 }}>
-      <Flex sx={{ justifyContent: "center" }}>
+    <Flex sx={{ p: 2, minWidth: 160 }}>
+      <Flex sx={{ alignItems: "center", px: 2 }}>
         <SymbolIcon symbol={asset.currency} />
       </Flex>
-      <Flex sx={{ justifyContent: "center" }}>
-        {asset.amount.toFixed(4)}
+      <Flex sx={{ flexDirection: "column" }}>
+        <Flex sx={{ justifyContent: "center" }}>
+          {symbol[asset.currency] + asset.position.toFixed(4)}
+        </Flex>
+        <Flex sx={{ justifyContent: "center" }}>
+          ${asset.averagePrice.toFixed(2)}
+        </Flex>
+        <Flex sx={{ justifyContent: "center" }}>
+          ${asset.cost.toFixed(2)}
+        </Flex>
+        <Flex sx={{ justifyContent: "center" }}>
+          ${asset.currentPrice.toFixed(2)}
+        </Flex>
       </Flex>
-    </Card>
+    </Flex>
   );
 };
 

@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { Flex } from "theme-ui";
-import BalanceCard from "./BalanceCard";
-import { CurrencyAmount } from "../pages/api/google/sheets";
+import BalanceCard, { Asset } from "./BalanceCard";
 
-const Balances: FC<{ assets: CurrencyAmount[] }> = ({ assets }) => {
+const Balances: FC<{ assets: Asset[] }> = ({ assets }) => {
   return (
     <Flex sx={{ width: "100%", justifyContent: "space-between"}}>
       {assets.map((asset, index) => (
