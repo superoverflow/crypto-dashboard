@@ -20,7 +20,7 @@ const Header: FC<{ setTrades: Dispatch<SetStateAction<BinanceTrade[]>> }> = ({
 
   return (
     <>
-    <Flex sx={{ bg: "muted", flexDirection: "row-reverse", gap: 3 }}>
+    <Flex sx={{ bg: "muted", flexDirection: "row-reverse", gap: 3, mb: 3}}>
       {!session && <Button onClick={() => signIn()}>Sign In</Button>}
       {session && (
         <>

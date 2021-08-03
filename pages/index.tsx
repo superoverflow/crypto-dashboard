@@ -60,7 +60,7 @@ export default function Home({ btcusd }: { btcusd: OHLC[] }) {
     ["cryptoPositions", trades],
     () => cryptoPositions(trades),
   );
-  console.log("refetch")
+
   return (
     <Container sx={{ bg: "background", width: 800 }}>
       <Header setTrades={setTrades} />

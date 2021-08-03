@@ -2,7 +2,7 @@ import { FC } from "react";
 import { Flex, Image } from "theme-ui";
 import { symbol } from "./TradeTable";
 
-const SymbolIcon: FC<{ symbol: string }> = ({ symbol }) => (
+export const SymbolIcon: FC<{ symbol: string }> = ({ symbol }) => (
   <Image
     src={`https://raw.githubusercontent.com/spothq/cryptocurrency-icons/master/32/icon/${symbol.toLowerCase()}.png`}
     alt={symbol}
